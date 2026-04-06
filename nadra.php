@@ -1,66 +1,47 @@
+<?php
+function checkVotingAge() {
+
+    $name = $_POST["full_name"] ?? "";
+    $birthYear = $_POST["birth_year"] ?? "";
+
+    $currentYear = date("Y");
+
+    if ($name && $birthYear) {
+
+        $age = $currentYear - $birthYear;
+
+        if ($age >= 18) {
+            echo "<h2 style='color: green; text-align: center;'>Verification Successful, $name</h2>";
+            echo "<p style='text-align: center;'>Your Age: $age</p>";
+        } else {
+            echo "<h2 style='color: red; text-align: center;'>Access Denied: Under 18</h2>";
+            echo "<p style='text-align: center;'>Your Age: $age</p>";
+        }
+
+    } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
+        echo "<h3 style='color: orange; text-align: center;'>Please fill all fields!</h3>";
+    }
+}
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>NADRA e-Portal Verification</title>
-
-    <!-- Bootstrap 5 CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>NADRA Age Verification</title>
 </head>
+<body style="text-align:center; font-family: Arial;">
 
-<body class="bg-light">
+    <h1>NADRA Verification System</h1>
 
-<div class="container mt-5">
-    <div class="card p-4 shadow">
-        <h2 class="text-center mb-4">NADRA e-Portal</h2>
+    <form method="POST">
+        <input type="text" name="full_name" placeholder="Enter Full Name" required><br><br>
+        <input type="number" name="birth_year" placeholder="Enter Birth Year" required><br><br>
+        <button type="submit">Check Eligibility</button>
+    </form>
 
-        <!-- FORM -->
-        <form action="verify.php" method="POST">
+    <br>
 
-            <!-- Full Name -->
-            <div class="mb-3">
-                <label class="form-label">Full Name</label>
-                <input type="text" name="full_name" class="form-control" required>
-            </div>
-
-            <!-- Birth Year -->
-            <div class="mb-3">
-                <label class="form-label">Birth Year</label>
-                <input type="number" name="birth_year" class="form-control" required>
-            </div>
-
-            <!-- Submit -->
-            <button type="submit" class="btn btn-success w-100">Verify</button>
-
-        </form>
-    </div>
-</div>
+    <?php checkVotingAge(); ?>
 
 </body>
 </html>
-<?php
-
-function checkVotingAge() {
-
-    // Catch data from form
-    $name = $_POST['full_name'];
-    $birthYear = $_POST['birth_year'];
-
-    // Current year
-    $currentYear = 2026;
-
-    // Calculate age
-    $age = $currentYear - $birthYear;
-
-    // Check age condition
-    if ($age >= 18) {
-        echo "<h2 style='color: green; text-align: center;'>Verification Successful, $name</h2>";
-    } else {
-        echo "<h2 style='color: red; text-align: center;'>Access Denied: Under 18</h2>";
-    }
-}
-
-// Call function
-checkVotingAge();
-
-?>
